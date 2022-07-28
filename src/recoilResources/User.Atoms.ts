@@ -14,3 +14,8 @@ export const difficultyState = atom({
   key: 'difficulty',
   default: ""
 });
+
+export const ScoreState = atom({
+  key: 'score',
+  default: 0
+});
