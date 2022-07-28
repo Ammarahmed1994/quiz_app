@@ -5,7 +5,12 @@ export const categoriesState = atom({
   default: [] // default value (aka initial value)
 });
 
-export const Mega = atom({
-  key: 'Mega',
-  default: false
+export const questionsState = atom({
+  key: 'questions', // unique ID (with respect to other atoms/selectors)
+  default: [] // default value (aka initial value)
+});
+
+export const difficultyState = atom({
+  key: 'difficulty',
+  default: ""
 });

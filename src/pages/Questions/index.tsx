@@ -2,7 +2,11 @@
 import React, { useEffect } from "react";
 import { useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import { categoriesState } from "../../recoilResources/User.Atoms";
+import { runInNewContext } from "vm";
+import {
+  difficultyState,
+  questionsState,
+} from "../../recoilResources/User.Atoms";
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 interface QuestionObject {
@@ -17,41 +21,37 @@ interface QuestionObject {
 const Questions = (): JSX.Element => {
   const [step, setStep] = useState<number>(0);
 
-  const questions: QuestionObject[] = [
-    {
-      category: "Category 1",
-      type: "radio",
-      difficulty: "medium",
-      question: "Is your name Ammar",
-      correct_answer: "true",
-      incorrect_answers: "false",
-    },
-    {
-      category: "Category 2",
-      type: "checkbox",
-      difficulty: "medium",
-      question: "Is your name Ahmed",
-      correct_answer: "four",
-      incorrect_answers: ["one", "two", "three"],
-    },
-    {
-      category: "Category 2",
-      type: "checkbox",
-      difficulty: "medium",
-      question: "Is your name mohsen",
-      correct_answer: "four",
-      incorrect_answers: ["one", "two", "three"],
-    },
-  ];
+  const [questions]: any = useRecoilState(questionsState);
+  const [difficulty]: any = useRecoilState(difficultyState);
+
+  // const [score, setScore] = useState<number>(0);
+
+  const minutesCondition =
+    difficulty === "easy"
+      ? 0
+      : difficulty === "medium"
+      ? 0
+      : difficulty === "hard"
+      ? 1
+      : 0;
+
+  const secondsCondition =
+    difficulty === "easy"
+      ? 30
+      : difficulty === "medium"
+      ? 59
+      : difficulty === "hard"
+      ? 30
+      : 0;
 
   const handleNextButton = () => {
     setStep(step + 1);
-    setSeconds(3);
-    setMinutes(0);
+    setMinutes(minutesCondition);
+    setSeconds(secondsCondition);
   };
 
-  const initialMinute = 0;
-  const initialSeconds = 3;
+  const initialMinute: any = minutesCondition;
+  const initialSeconds: any = secondsCondition;
   const [minutes, setMinutes] = useState(initialMinute);
   const [seconds, setSeconds] = useState(initialSeconds);
 
@@ -63,8 +63,8 @@ const Questions = (): JSX.Element => {
       if (seconds === 0) {
         if (minutes === 0) {
           setStep(step + 1);
-          setMinutes(0);
-          setSeconds(3);
+          setMinutes(minutesCondition);
+          setSeconds(secondsCondition);
           clearInterval(myInterval);
           return;
         } else {
@@ -98,37 +98,30 @@ const Questions = (): JSX.Element => {
               <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {questions[step]?.question}
               </h5>
-              <div className="flex items-center mb-4">
-                <input
-                  id="default-radio-1"
-                  type="radio"
-                  value="true"
-                  name="default-radio"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label
-                  htmlFor="default-radio-1"
-                  className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  True
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  checked
-                  id="default-radio-2"
-                  type="radio"
-                  value="false"
-                  name="default-radio"
-                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label
-                  htmlFor="default-radio-2"
-                  className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  False
-                </label>
-              </div>
+              <button
+                // className={`${
+                //   selectedCategory === category?.id
+                //     ? "p-2 m-2 rounded bg-gray-600 text-white"
+                //     : " p-2 m-2  rounded  bg-gray-300"
+                // }`}
+                className="p-2 m-2  rounded  bg-gray-300"
+                value="true"
+                // onClick={() => handleChooseCategory(category?.id)}
+              >
+                True
+              </button>
+              <button
+                // className={`${
+                //   selectedCategory === category?.id
+                //     ? "p-2 m-2 rounded bg-gray-600 text-white"
+                //     : " p-2 m-2  rounded  bg-gray-300"
+                // }`}
+                className="p-2 m-2  rounded  bg-gray-300"
+                value="false"
+                // onClick={() => handleChooseCategory(category?.id)}
+              >
+                False
+              </button>
             </>
           ) : (
             <>
