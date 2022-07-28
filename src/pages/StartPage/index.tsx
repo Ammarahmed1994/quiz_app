@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 import {
   categoriesState,
@@ -113,7 +112,6 @@ const StartPage = (): JSX.Element => {
             style={{
               backgroundColor: "#DF8A40",
             }}
-            // onClick={handleNextButton}
             type="submit"
           >
             Play
