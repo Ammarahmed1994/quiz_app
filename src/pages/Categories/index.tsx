@@ -16,7 +16,7 @@ interface CategoryObject {
 }
 
 const Categories = (): JSX.Element => {
-  const [categories]: any = useRecoilState(categoriesState);
+  const [categories, setCategories]: any = useRecoilState(categoriesState);
   const [difficulty]: any = useRecoilState(difficultyState);
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [, setQuestions] = useRecoilState(questionsState);
@@ -26,10 +26,22 @@ const Categories = (): JSX.Element => {
     setSelectedCategory(id);
   };
 
+  const spliceUsedCategory = (selectedCategory: any) => {
+    const newCategories = [...categories];
+    const index = newCategories.findIndex((singleCategory: any) => {
+      return singleCategory.id === selectedCategory;
+    });
+
+    if (index > -1) {
+      newCategories.splice(index, 1);
+    }
+    setCategories(newCategories);
+  };
+
   const handleQuestionNavigation = () => {
     axios
       .get(
-        `https://opentdb.com/api.php?amount=10&category=${selectedCategory}&difficulty=${difficulty}`
+        `https://opentdb.com/api.php?amount=3&category=${selectedCategory}&difficulty=${difficulty}`
       )
       .then((response: any) => {
         const questionResult = response?.data.results;
@@ -60,8 +72,9 @@ const Categories = (): JSX.Element => {
           };
           return questionNewObject;
         });
-        console.log(`new`, newQuestions);
+
         setQuestions(newQuestions);
+        spliceUsedCategory(selectedCategory);
         setRedirect(true);
       })
       .catch((err) => {

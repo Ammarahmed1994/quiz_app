@@ -1,9 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from "react";
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import UserInfo from "src/common/UserInfo";
 import {
+  categoriesState,
   difficultyState,
   questionsState,
   ScoreState,
@@ -21,12 +24,10 @@ interface QuestionObject {
 
 const Questions = (): JSX.Element => {
   const [step, setStep] = useState<number>(0);
-
-  const [questions]: any = useRecoilState(questionsState);
+  const [categories]: any = useRecoilState(categoriesState);
+  const [questions, setQuestions]: any = useRecoilState(questionsState);
   const [difficulty]: any = useRecoilState(difficultyState);
-
   const [selectedAnswer, setSelectedAnswer] = useState<number>(0);
-
   const [, setScore] = useRecoilState(ScoreState);
 
   const minutesCondition =
@@ -53,26 +54,63 @@ const Questions = (): JSX.Element => {
   const [seconds, setSeconds] = useState(initialSeconds);
 
   useEffect(() => {
+    const newQuestionsArray = questions.map((question: any) => {
+      const newAnswers = handleShuffleAnswers(question.answers);
+      const questionNewObject = {
+        question: question.question,
+        category: question.category,
+        difficulty: question.difficulty,
+        type: question.type,
+        answers: newAnswers,
+      };
+      return questionNewObject;
+    });
+    setQuestions(newQuestionsArray);
+  }, [step]);
+
+  const handleNextButton = (question: any) => {
+    const findCorrectAnswerFromQuestion = question?.answers.find(
+      (a: any) => a.isCorrect === true
+    );
+    const correctAnswerId = findCorrectAnswerFromQuestion.id;
+
+    if (selectedAnswer === correctAnswerId) {
+      setScore((current) => current + 1);
+    } else {
+      setScore((current) => current);
+    }
+    setStep(step + 1);
+    setMinutes(minutesCondition);
+    setSeconds(secondsCondition);
+    setSelectedAnswer(0);
+  };
+
+  const handleShuffleAnswers = (answers: any) => {
+    const newAnswers = [...answers];
+    let currentIndex = newAnswers.length,
+      randomIndex;
+
+    while (currentIndex !== 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      [newAnswers[currentIndex], newAnswers[randomIndex]] = [
+        newAnswers[randomIndex],
+        newAnswers[currentIndex],
+      ];
+    }
+
+    return newAnswers;
+  };
+
+  useEffect(() => {
     let myInterval: any = setInterval(() => {
       if (seconds > 0) {
         setSeconds(seconds - 1);
       }
       if (seconds === 0) {
         if (minutes === 0) {
-          const findCorrectAnswerFromQuestion = questions[step].answers.find(
-            (a: any) => a.isCorrect === true
-          );
-
-          const correctAnswerId = findCorrectAnswerFromQuestion.id;
-          if (selectedAnswer === correctAnswerId) {
-            setScore((current) => current + 1);
-          } else {
-            setScore((current) => current);
-          }
-          setStep(step + 1);
-          setMinutes(minutesCondition);
-          setSeconds(secondsCondition);
-          setSelectedAnswer(0);
+          handleNextButton(questions[step]);
           clearInterval(myInterval);
           return;
         } else {
@@ -86,23 +124,6 @@ const Questions = (): JSX.Element => {
       clearInterval(myInterval);
     };
   });
-
-  const handleNextButton = (question: any) => {
-    const findCorrectAnswerFromQuestion = question.answers.find(
-      (a: any) => a.isCorrect === true
-    );
-
-    const correctAnswerId = findCorrectAnswerFromQuestion.id;
-    if (selectedAnswer === correctAnswerId) {
-      setScore((current) => current + 1);
-    } else {
-      setScore((current) => current);
-    }
-    setStep(step + 1);
-    setMinutes(minutesCondition);
-    setSeconds(secondsCondition);
-    setSelectedAnswer(0);
-  };
 
   const handleSkipButton = () => {
     setScore((current) => current);
@@ -161,8 +182,24 @@ const Questions = (): JSX.Element => {
         ``
       )}
 
-      {step + 1 > questions?.length ? (
-        ``
+      {categories.length === 0 && step + 1 > questions?.length ? (
+        <div className="mt-5 text-center">
+          <h5>Wanna start over with new questions?</h5>
+          <Link to="/">
+            <button className="bg-blue-400 text-white w-1/4 px-4 py-2">
+              Start A new Game
+            </button>
+          </Link>
+        </div>
+      ) : step + 1 > questions?.length ? (
+        <div className="mt-5  text-center">
+          <h5>Ready for another round? </h5>
+          <Link to="/categories">
+            <button className="bg-blue-400 text-white w-1/4 px-4 py-2">
+              Let's go
+            </button>
+          </Link>
+        </div>
       ) : (
         <div className="w-3/4 lg:w-1/4 flex justify-center mx-auto gap-4">
           <button

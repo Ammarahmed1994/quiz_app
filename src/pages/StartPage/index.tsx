@@ -100,7 +100,7 @@ const StartPage = (): JSX.Element => {
           </div>
 
           <input
-            className="flex items-center h-12 px-4 w-full bg-gray-50 mt-2 rounded focus:outline-none focus:ring-2"
+            className="flex items-center h-12 px-4 w-full  mt-2 rounded focus:outline-none focus:ring-2"
             type="text"
             name="username"
             placeholder="Enter your Name"
