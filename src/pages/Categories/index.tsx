@@ -31,7 +31,38 @@ const Categories = (): JSX.Element => {
         `https://opentdb.com/api.php?amount=3&category=${selectedCategory}&difficulty=${difficulty}`
       )
       .then((response: any) => {
-        setQuestions(response?.data.results);
+        const questionResult = response?.data.results;
+
+        const newQuestions = questionResult?.map((question: any) => {
+          let questionAnswers: any = [];
+
+          if (question.type === "multiple") {
+            questionAnswers = question.incorrect_answers.map(
+              (q: any, index: number) => ({
+                answer: q,
+                id: index + 1,
+                isCorrect: false,
+              })
+            );
+            let correctAnswerObject = {
+              answer: question.correct_answer,
+              id: 4,
+              isCorrect: true,
+            };
+            questionAnswers.push(correctAnswerObject);
+          }
+
+          console.log(`questionAnswers`, questionAnswers);
+          const questionnewObject = {
+            question: question.question,
+            category: question.category,
+            difficulty: question.difficulty,
+            type: question.type,
+            answers: questionAnswers,
+          };
+          return questionnewObject;
+        });
+        setQuestions(newQuestions);
         setRedirect(true);
       })
       .catch((err) => {
