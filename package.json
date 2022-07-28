@@ -2,7 +2,7 @@
   "name": "quizapp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "",
+  "homepage": "https://Ammarahmed1994.github.io/quiz_app",
   "dependencies": {
     "@craco/craco": "^6.2.0",
     "@emotion/react": "^11.5.0",

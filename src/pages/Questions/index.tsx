@@ -173,7 +173,7 @@ const Questions = (): JSX.Element => {
 
       {categories.length === 0 && step + 1 > questions?.length ? (
         <div className="mt-5 text-center">
-          <h5>Wanna start over with new questions?</h5>
+          <h5>Awesome, Wanna start over with new questions?</h5>
           <Link to="/">
             <button className="bg-blue-400 text-white w-1/4 px-4 py-2">
               Start A new Game

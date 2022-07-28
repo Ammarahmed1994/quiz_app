@@ -40,7 +40,7 @@ const Categories = (): JSX.Element => {
   const handleQuestionNavigation = () => {
     axios
       .get(
-        `https://opentdb.com/api.php?amount=3&category=${selectedCategory}&difficulty=${difficulty}`
+        `https://opentdb.com/api.php?amount=10&category=${selectedCategory}&difficulty=${difficulty}`
       )
       .then((response: any) => {
         const questionResult = response?.data.results;
@@ -84,7 +84,7 @@ const Categories = (): JSX.Element => {
   return (
     <>
       <UserInfo />
-      <div className="container fluid mt-10 block p-6 w-3/4 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+      <div className="container fluid mt-10 block p-6 w-3/4 bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 mx-auto">
         <h5 className="mb-2 text-2xl text-center font-normal tracking-tight text-gray-900 dark:text-white">
           Select Category
         </h5>

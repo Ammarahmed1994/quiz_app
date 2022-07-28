@@ -45,7 +45,7 @@ const StartPage = (): JSX.Element => {
     axios
       .get(`https://opentdb.com/api_category.php`)
       .then((response: any) => {
-        setCategories(response?.data.trivia_categories.slice(0, 3));
+        setCategories(response?.data.trivia_categories.slice(0, 5));
       })
       .catch((err) => {
         console.log(err);
@@ -76,9 +76,9 @@ const StartPage = (): JSX.Element => {
           onSubmit={handleSubmit}
         >
           <div className="font-semibold text-md text-center">
-            choose your difficulty level, Add your Name
+            Choose your difficulty level, add your Name
             <br />
-            and let the game begins
+            and let the game begin
           </div>
           <div className="flex flex-row justify-center">
             {levels?.map((level: any) => (
