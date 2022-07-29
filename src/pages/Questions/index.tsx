@@ -133,7 +133,7 @@ const Questions = (): JSX.Element => {
       <div>
         {(minutes === 0 && seconds === 0) ||
         step + 1 > questions?.length ? null : (
-          <h1 className=" bg-gray-300 rounded-xl w-1/4 mx-auto mt-10 text-center">
+          <h1 className=" bg-gray-300 rounded-xl w-1/4 mx-auto mt-10 text-center p-4">
             {" "}
             {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
           </h1>

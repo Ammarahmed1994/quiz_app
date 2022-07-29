@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import {
   categoriesState,
   difficultyState,
+  usernameState,
 } from "../../recoilResources/User.Atoms";
 
 const levels = [
@@ -24,8 +25,9 @@ const levels = [
 
 const StartPage = (): JSX.Element => {
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>("");
-  const [username, setUsername] = useState<string>("");
+  const [nameOfUser, setNameOfUser] = useState<string>("");
   const [, setCategories] = useRecoilState(categoriesState);
+  const [, setUsername] = useRecoilState(usernameState);
   const [redirect, setRedirect] = useState<boolean>(false);
 
   const [, setDifficulty] = useRecoilState(difficultyState);
@@ -51,7 +53,7 @@ const StartPage = (): JSX.Element => {
         console.log(err);
       });
 
-    localStorage.setItem("username", username);
+    setUsername(nameOfUser);
     setDifficulty(selectedDifficulty);
 
     setTimeout(() => {
@@ -60,7 +62,7 @@ const StartPage = (): JSX.Element => {
   };
 
   const handleUsernameChange = (event: any) => {
-    setUsername(event.target.value);
+    setNameOfUser(event.target.value);
   };
 
   const handleChooseDifficulty = (name: any) => {

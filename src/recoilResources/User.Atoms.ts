@@ -19,3 +19,8 @@ export const ScoreState = atom({
   key: 'score',
   default: 0
 });
+
+export const usernameState = atom({
+  key: 'username',
+  default: ""
+});

@@ -1,10 +1,10 @@
 import { useRecoilState } from "recoil";
-import { ScoreState } from "src/recoilResources/User.Atoms";
-
-const username = localStorage.getItem("username");
+import { ScoreState, usernameState } from "src/recoilResources/User.Atoms";
 
 const UserInfo = (): JSX.Element => {
   const [score]: any = useRecoilState(ScoreState);
+  const [username]: any = useRecoilState(usernameState);
+
   return (
     <>
       <div className="max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 mt-10 mx-auto">
